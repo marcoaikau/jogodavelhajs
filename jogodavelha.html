@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo da Velha</title>
+  <style>
+  *, html, body {
+    box-sizing: border-box;
+  }
+  #app {
+    margin: 0 auto;
+    width: 700px;
+  }
+  #app .header .titulo {
+    text-align: center;
+    font-size: 36px;
+  }
+    .table {
+      display: flex;
+      flex-direction: column;
+    }
+    .row {
+      display: flex;
+      flex-direction: row;
+      
+    }
+    .table .row div {
+      border: 1px solid lightgray;
+      height: 140px;
+      flex: 1;
+    }
+    .table .row div:hover {
+      border: 1px solid gray;
+    }
+    .titulo h3 {
+      padding: 0;
+      margin: 30px 0;
+    }
+    .turno {
+      text-align: center;
+      padding: 0;
+      margin: 30px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="header">
+      <div class="titulo">
+        <h3>Jogo da Velha</h3>
+        <div class="turno">Agora é a vez da cor <span>VERMELHA</span>.</div>
+      </div>
+      <div class="turno">
+      </div>
+    </div>
+    <div class="table">
+    <div class="row">
+      <div name="c1"></div>
+      <div name="c2"></div>
+      <div name="c3"></div>
+    </div>
+    <div class="row">
+      <div name="c4"></div>
+      <div name="c5"></div>
+      <div name="c6"></div>
+    </div>
+    <div class="row">
+      <div name="c7"></div>
+      <div name="c8"></div>
+      <div name="c9"></div>
+    </div>
+    </div>
+    <div class="footer"></div>
+  </div>
+  
+  
+  
+  
+  <script>
+  function bin_to_dec(bstr) { 
+    return parseInt((bstr + '')
+    .replace(/[^01]/gi, ''), 2);
+}
+  function situacaoJogo() {
+    p1Bin = player1.toString().replace(/,/g,'');
+    win = [[1,0,0,0,1,0,0,0,1],[0,0,1,0,1,0,1,0,0],[1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,1,1,1],[1,0,0,1,0,0,1,0,0],[0,1,0,0,1,0,0,1,0],[0,0,1,0,0,1,0,0,1]];
+    win.map((arr) => {
+      if (JSON.stringify(arr)==JSON.stringify(player1)) {
+        console.log('PRETAS ganharam!');
+      }
+      if (JSON.stringify(arr)==JSON.stringify(player2)) {
+        console.log('AMARELAS ganharam!');
+      }
+    });
+    
+  }
+    function turnoVez() {
+      turno = turno ? false : true;
+      corFundo = turno ? 'yellow' : 'black';
+      box.style.backgroundColor = corFundo;
+    }
+    function controller() {
+      console.log('Controler is on.');
+      box = this;
+      index = this.getAttribute('name');
+      console.log(index[1]);
+      if (turno) {
+        if (table[index[1]-1] == 0) {
+          turnoVez();
+          player1[index[1]-1] = 1;    
+          table[index[1]-1] = 1;
+        }
+      } else {
+        if (table[index[1]-1] == 0) {
+          turnoVez();
+          player2[index[1]-1] = 1;
+          table[index[1]-1] = 1;   
+        }
+      }
+      situacaoJogo();
+      console.log('Player 1');
+      console.log(player1);
+      console.log('Player 2');
+      console.log(player2);
+    }
+    turno = true;
+    player1 = [0,0,0,0,0,0,0,0,0];
+    player2 = [0,0,0,0,0,0,0,0,0];
+    table = [0,0,0,0,0,0,0,0,0];
+    divs = document.querySelectorAll('.table .row  div');
+    tabuleiro = [...divs].map((text) => {
+      text.addEventListener('click', controller);
+    }
+      );
+
+    
+
+  </script>
+  
+</body>
+</html>
