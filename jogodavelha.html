@@ -50,6 +50,7 @@
       <div class="titulo">
         <h3>Jogo da Velha</h3>
         <div class="turno">Agora é a vez da cor <span>VERMELHA</span>.</div>
+        <div class="vencedor"></div>
       </div>
       <div class="turno">
       </div>
@@ -78,22 +79,36 @@
   
   
   <script>
-  function bin_to_dec(bstr) { 
-    return parseInt((bstr + '')
-    .replace(/[^01]/gi, ''), 2);
-}
+  
   function situacaoJogo() {
     p1Bin = player1.toString().replace(/,/g,'');
     win = [[1,0,0,0,1,0,0,0,1],[0,0,1,0,1,0,1,0,0],[1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,1,1,1],[1,0,0,1,0,0,1,0,0],[0,1,0,0,1,0,0,1,0],[0,0,1,0,0,1,0,0,1]];
-    win.map((arr) => {
-      if (JSON.stringify(arr)==JSON.stringify(player1)) {
+    p1Res = win[0].toString().replace(/,/g,'') & player1.toString().replace(/,/g,'');
+    console.log('p1Res: '+p1Res);
+    win.map((arr) => {;
+      if (JSON.stringify(player1) == JSON.stringify(arr)) {
+        p1 = true;
         console.log('PRETAS ganharam!');
       }
       if (JSON.stringify(arr)==JSON.stringify(player2)) {
         console.log('AMARELAS ganharam!');
+        p2 = true;
       }
     });
-    
+    vencedor();
+  }
+  function vencedor() {
+    if (p1) {
+      msg = 'PRETAS ganharam';
+    }
+    if (p2) {
+      msg = 'AMARELAS ganharam';
+    }
+    if (p1 || p2) {
+      console.log('Temos um vencedor');
+      quemvenceu = document.querySelector('.vencedor');
+      quemvenceu.innerHTML(msg);
+    }
   }
     function turnoVez() {
       turno = turno ? false : true;
@@ -124,17 +139,26 @@
       console.log('Player 2');
       console.log(player2);
     }
-    turno = true;
-    player1 = [0,0,0,0,0,0,0,0,0];
-    player2 = [0,0,0,0,0,0,0,0,0];
-    table = [0,0,0,0,0,0,0,0,0];
-    divs = document.querySelectorAll('.table .row  div');
-    tabuleiro = [...divs].map((text) => {
-      text.addEventListener('click', controller);
-    }
-      );
-
+   
     
+    function config() {
+      p1 = false;
+      p2 = false;
+      turno = true;
+      player1 = [0,0,0,0,0,0,0,0,0];
+      player2 = [0,0,0,0,0,0,0,0,0];
+      table = [0,0,0,0,0,0,0,0,0];
+      divs = document.querySelectorAll('.table .row  div');
+      tabuleiro = [...divs].map((text) => {
+        text.addEventListener('click', controller);
+      });
+    }
+    
+    function main() {
+      config();
+    }
+
+main();
 
   </script>
   
